@@ -159,9 +159,23 @@ public class NumeroRecyclerAdapter extends RecyclerView.Adapter<NumeroRecyclerVi
             @Override
             public void onClick(View view) {
                 int _id = mnumeros.get(position).getId();
-                int mcountfind;
-                mcountfind= Integer.valueOf(textView.getText().toString());
-                Log.d("IDFIND",String.valueOf(_id));
+                int mcountfind=0;
+// Date-18/2/2018               mcountfind= Integer.valueOf(textView.getText().toString());
+
+
+                String[] projection = {BaseColumns._ID,
+                        NumeroContract.NumeroColumns.NUMERO_COUNT};
+                String selection = NumeroContract.NumeroColumns.NUMERO_ID + "=="+_id;
+                mCursor = mContentResolver.query(NumeroContract.URI_TABLE, projection,selection, null, null);
+                if (mCursor != null) {
+                    if (mCursor.moveToFirst()) {
+                        Integer countnumber = mCursor.getInt(
+                                mCursor.getColumnIndex(NumeroContract.NumeroColumns.NUMERO_COUNT));
+                        mcountfind=countnumber;
+                    }
+                }
+
+
                 ContentValues values = new ContentValues();
                 values.put(NumeroContract.NumeroColumns.NUMERO_COUNT, mcountfind+1);
                 textView.setText(String.valueOf(mcountfind+1));
@@ -175,8 +189,21 @@ public class NumeroRecyclerAdapter extends RecyclerView.Adapter<NumeroRecyclerVi
             @Override
             public void onClick(View view) {
                 int _id = mnumeros.get(position).getId();
-                int mcountfind;
-                mcountfind= Integer.valueOf(textView.getText().toString());
+                int mcountfind=0;
+
+                String[] projection = {BaseColumns._ID,
+                        NumeroContract.NumeroColumns.NUMERO_COUNT};
+                String selection = NumeroContract.NumeroColumns.NUMERO_ID + "=="+_id;
+                mCursor = mContentResolver.query(NumeroContract.URI_TABLE, projection,selection, null, null);
+                if (mCursor != null) {
+                    if (mCursor.moveToFirst()) {
+                        Integer countnumber = mCursor.getInt(
+                                mCursor.getColumnIndex(NumeroContract.NumeroColumns.NUMERO_COUNT));
+                        mcountfind=countnumber;
+                    }
+                }
+
+// Date-18/2/2018               mcountfind= Integer.valueOf(textView.getText().toString());
                 if(_id!=0 && mcountfind>0) {
                     ContentValues values = new ContentValues();
                     values.put(NumeroContract.NumeroColumns.NUMERO_COUNT, mcountfind - 1);
